@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0575659d-62fb-4236-afa5-da469e46eb2d}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{fd6640b9-9d17-4c44-aaf2-f60de71a38b3}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Header Files\WTL">
+      <UniqueIdentifier>{d0458cf5-0161-4a0d-a134-3d2362ea52f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{9b3c70bd-32ec-411c-a250-3f02edd18a97}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AES_Helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AESWizard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AMC Tool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CAboutDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AES_Helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AESWizard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CAboutDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CBenchResults.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlapp.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlcrack.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlctrls.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlctrlw.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlctrlx.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlddx.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atldlgs.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atldwm.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlfind.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlframe.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlgdi.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlmisc.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlprint.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlres.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlresce.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlscrl.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlsplit.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atltheme.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atluser.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlwince.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WTL\Include\atlwinx.h">
+      <Filter>Header Files\WTL</Filter>
+    </ClInclude>
+    <ClInclude Include="platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\AMC Tool.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AMC Tool.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
