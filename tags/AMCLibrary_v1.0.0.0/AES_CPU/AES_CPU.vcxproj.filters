@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="inc">
+      <UniqueIdentifier>{a0b0f241-46d7-4bae-81ba-3088c9491e95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4f0720f7-6728-430b-9795-1adb3e2e7b26}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\AES_CPU.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AES_CPU_Impl_O0.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AES_CPU_Impl_O1.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AES_CPU_Impl_O2.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AES_CPU_Internal.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AES_CPU_Impl_O3.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\AES_CPU.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AES_CPU_Impl_O0.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AES_CPU_Impl_O1.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AES_CPU_Impl_O2.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AES_CPU_Impl_O3.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\AES_CPU.rc">
+      <Filter>src</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
