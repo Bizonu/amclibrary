@@ -527,7 +527,7 @@ BOOL
 CALLBACK CGraphDlg::FindFlashWindowProc(HWND hwnd, LPARAM lParam)
 {
     TCHAR className[256];
-    GetClassName(hwnd, className, 1024);
+    GetClassName(hwnd, className, _countof(className));
     if( _tcscmp(className, _T("MacromediaFlashPlayerActiveX")) == 0 )
     {
         *((HWND*)lParam) = hwnd;

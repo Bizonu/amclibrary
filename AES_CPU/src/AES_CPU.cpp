@@ -174,7 +174,7 @@ AES_CPU_Internal::SetKey(const AES_Key *key)
     m_keySize = key->GetKeySize();
     m_keyDataSize = key->GetKeySizeBytes();
 
-    memcpy(m_key, key->GetKeyData(), m_keyDataSize);
+    memcpy(m_key, key->GetKeyData(), min(m_keyDataSize, countof(m_key)));
 
     m_AES_Impl->SetKeyData(m_key, m_keyDataSize, m_keySize);
 

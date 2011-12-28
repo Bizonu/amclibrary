@@ -16,6 +16,7 @@
 ///  limitations under the License.
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "platform.h"
 #include "AES_CPU_Impl_O0.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +69,7 @@ __declspec(align(16)) const UINT8 rsbox[256] =
 void
 AES_CPU_Impl_O0::SetKeyData(const UINT8 *keyData, UINT32 keyDataSize, AES_Key::AES_KeySize keySize)
 {
-    memcpy(m_key, keyData, keyDataSize);
+    memcpy(m_key, keyData, min(keyDataSize, countof(m_key)));
     m_keySize = keySize;
     m_Nk = m_keySize >> 5;
     m_Nr = m_Nk + 6;

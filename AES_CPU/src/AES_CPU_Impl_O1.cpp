@@ -17,6 +17,7 @@
 ///  limitations under the License.
 ///
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "platform.h"
 #include "AES_CPU_Impl_O1.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -430,7 +431,7 @@ AES_CPU_Impl_O1::SetKeyData(const UINT8 *keyData, UINT32 keyDataSize, AES_Key::A
     m_keySize = keySize;
     m_Nk = m_keySize >> 5;
     m_Nr = m_Nk + 6;
-    memcpy(m_keyEnc, keyData, keyDataSize);
+    memcpy(m_keyEnc, keyData, min(keyDataSize, countof(m_keyEnc)));
 
     // Because we want to use the same form of algorithm for decryption as for encryption, we
     // copy in m_keyDec the keys in reverse order of the rounds and also apply InvMixColumns 
