@@ -39,9 +39,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #define printLog(format, ...)           \
 do{                                     \
-    CString tmp;                        \
-    tmp.Format(format, __VA_ARGS__);    \
-    *pLog = *pLog + tmp;                \
+    CString __tmp;                      \
+    __tmp.Format(format, __VA_ARGS__);  \
+    *pLog = *pLog + __tmp;              \
     pTask->OnUpdateLog(pLog);           \
 }while(0)
 
@@ -546,100 +546,108 @@ AES_Helper::RunEncryption(void *pThis)
         fileSize = dataSize;
         UINT8 *buff = (UINT8*)malloc((size_t)min(dataSize, BUFF_SIZE) + 16);
 
-        if( pTask->mEncrypt )
+        if(buff != NULL)
         {
-            // We have to encrypt the data
-            if( pTask->mMode != 2 )
+            if( pTask->mEncrypt )
             {
-                // We have the mode ECB or CBC, so we must perform padding on the data
-                while( dataSize > 0 && thiz->mIsRunning )
+                // We have to encrypt the data
+                if( pTask->mMode != 2 )
                 {
-                    UINT32 blockSize = (UINT32)min(dataSize, BUFF_SIZE);
-                    pTask->OnProgress((int)((100 * (fileSize - dataSize)) / fileSize));
-                    dataSize -= blockSize;
-
-                    if( dataSize != 0 )
-                        fread(buff, 1, blockSize, fin);
-                    else
+                    // We have the mode ECB or CBC, so we must perform padding on the data
+                    while( dataSize > 0 && thiz->mIsRunning )
                     {
-                        // Must perform padding
-                        UINT32 readBytes = (UINT32)fread(buff, 1, blockSize, fin);
-                        readBytes = blockSize - readBytes;
+                        UINT32 blockSize = (UINT32)min(dataSize, BUFF_SIZE);
+                        pTask->OnProgress((int)((100 * (fileSize - dataSize)) / fileSize));
+                        dataSize -= blockSize;
 
-                        if( readBytes != 0 )
-                            for( UINT32 i = 1; i <= readBytes; i++ )
-                                buff[blockSize - i] = readBytes;
+                        if( dataSize != 0 )
+                            fread(buff, 1, blockSize, fin);
                         else
-                            for( UINT32 i = 0; i <16; i++ )
-                                buff[blockSize + i] = 16;
-                    }
+                        {
+                            // Must perform padding
+                            UINT32 readBytes = (UINT32)fread(buff, 1, blockSize, fin);
+                            readBytes = blockSize - readBytes;
 
-                    aesAlg->Encrypt(buff, buff, blockSize);
-                    fwrite(buff, 1, blockSize, fout);
+                            if( readBytes != 0 )
+                                for( UINT32 i = 1; i <= readBytes; i++ )
+                                    buff[blockSize - i] = readBytes;
+                            else
+                                for( UINT32 i = 0; i <16; i++ )
+                                    buff[blockSize + i] = 16;
+                        }
+
+                        aesAlg->Encrypt(buff, buff, blockSize);
+                        fwrite(buff, 1, blockSize, fout);
+                    }
+                }
+                else
+                {
+                    // We have CTR, so zero padding will be done, but in the file 
+                    // will be written the number of bytes read from the input file
+                    while( dataSize > 0 && thiz->mIsRunning )
+                    {
+                        UINT32 blockSize = (UINT32)min(dataSize, BUFF_SIZE);
+                        pTask->OnProgress((int)((100 * (fileSize - dataSize)) / fileSize));
+                        dataSize -= blockSize;
+
+                        if( dataSize == 0 )
+                            // Must perform zero padding
+                            memset(buff + blockSize - 16, 0, 16);
+                        UINT32 readBytes = (UINT32)fread(buff, 1, blockSize, fin);
+
+                        aesAlg->Encrypt(buff, buff, blockSize);
+                        fwrite(buff, 1, readBytes, fout);
+                    }
                 }
             }
             else
             {
-                // We have CTR, so zero padding will be done, but in the file 
-                // will be written the number of bytes read from the input file
-                while( dataSize > 0 && thiz->mIsRunning )
+                // We have to decrypt the date
+                if( pTask->mMode != 2 )
                 {
-                    UINT32 blockSize = (UINT32)min(dataSize, BUFF_SIZE);
-                    pTask->OnProgress((int)((100 * (fileSize - dataSize)) / fileSize));
-                    dataSize -= blockSize;
+                    // We have the mode ECB or CBC, so we must perform padding on the data
+                    while( dataSize > 0 && thiz->mIsRunning )
+                    {
+                        UINT32 blockSize = (UINT32)min(dataSize, BUFF_SIZE);
+                        pTask->OnProgress((int)((100 * (fileSize - dataSize)) / fileSize));
+                        dataSize -= blockSize;
 
-                    if( dataSize == 0 )
-                        // Must perform zero padding
-                        memset(buff + blockSize - 16, 0, 16);
-                    UINT32 readBytes = (UINT32)fread(buff, 1, blockSize, fin);
+                        UINT32 readBytes = (UINT32)fread(buff, 1, blockSize, fin);
+                        aesAlg->Decrypt(buff, buff, blockSize);
 
-                    aesAlg->Encrypt(buff, buff, blockSize);
-                    fwrite(buff, 1, readBytes, fout);
+                        if( dataSize == 0 )
+                            // Must perform unpadding
+                            readBytes -= buff[readBytes - 1];
+                        fwrite(buff, 1, readBytes, fout);
+                    }
+                }
+                else
+                {
+                    // We have CTR, so zero padding will be done, but in the file 
+                    // will be written the number of bytes read from the input file
+                    while( dataSize > 0 && thiz->mIsRunning )
+                    {
+                        UINT32 blockSize = (UINT32)min(dataSize, BUFF_SIZE);
+                        pTask->OnProgress((int)((100 * (fileSize - dataSize)) / fileSize));
+                        dataSize -= blockSize;
+
+                        if( dataSize == 0 )
+                            // Must perform zero padding
+                            memset(buff + blockSize - 16, 0, 16);
+                        UINT32 readBytes = (UINT32)fread(buff, 1, blockSize, fin);
+
+                        aesAlg->Decrypt(buff, buff, blockSize);
+                        fwrite(buff, 1, readBytes, fout);
+                    }
                 }
             }
+            free(buff);
         }
         else
         {
-            // We have to decrypt the date
-            if( pTask->mMode != 2 )
-            {
-                // We have the mode ECB or CBC, so we must perform padding on the data
-                while( dataSize > 0 && thiz->mIsRunning )
-                {
-                    UINT32 blockSize = (UINT32)min(dataSize, BUFF_SIZE);
-                    pTask->OnProgress((int)((100 * (fileSize - dataSize)) / fileSize));
-                    dataSize -= blockSize;
-
-                    UINT32 readBytes = (UINT32)fread(buff, 1, blockSize, fin);
-                    aesAlg->Decrypt(buff, buff, blockSize);
-
-                    if( dataSize == 0 )
-                        // Must perform unpadding
-                        readBytes -= buff[readBytes - 1];
-                    fwrite(buff, 1, readBytes, fout);
-                }
-            }
-            else
-            {
-                // We have CTR, so zero padding will be done, but in the file 
-                // will be written the number of bytes read from the input file
-                while( dataSize > 0 && thiz->mIsRunning )
-                {
-                    UINT32 blockSize = (UINT32)min(dataSize, BUFF_SIZE);
-                    pTask->OnProgress((int)((100 * (fileSize - dataSize)) / fileSize));
-                    dataSize -= blockSize;
-
-                    if( dataSize == 0 )
-                        // Must perform zero padding
-                        memset(buff + blockSize - 16, 0, 16);
-                    UINT32 readBytes = (UINT32)fread(buff, 1, blockSize, fin);
-
-                    aesAlg->Decrypt(buff, buff, blockSize);
-                    fwrite(buff, 1, readBytes, fout);
-                }
-            }
+            thiz->mIsRunning = false;
+            printLog(_T("\r\nCpuld not allocate memory...\r\n"));
         }
-        free(buff);
     BENCHMARK_END(timeMs);
         pTask->OnProgress(100);
 

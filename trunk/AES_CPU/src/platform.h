@@ -46,4 +46,9 @@
 // Windows Header Files:
 #include <windows.h>
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#ifndef countof
+    #define countof( array ) ( sizeof( array )/sizeof( array[0] ) )
+#endif
+
 #endif // __INCLUDED_PLATFORM_H__

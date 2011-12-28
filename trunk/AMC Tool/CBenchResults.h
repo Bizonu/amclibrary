@@ -94,12 +94,13 @@ public:
             TCHAR *deviceName = new TCHAR[deviceNameSize];
             if( fread(deviceName, deviceNameSize, 1, fin) != 1 )
             {
-                delete deviceName;
+                delete [] deviceName;
                 goto _LOAD_FAILED_;
             }
 
             CString cdeviceName = deviceName;
             mDevices.push_back(cdeviceName);
+            delete [] deviceName;
         }
 
         UINT32 nbResults;

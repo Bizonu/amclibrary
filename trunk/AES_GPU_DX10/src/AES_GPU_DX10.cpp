@@ -43,7 +43,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // The handle to this module
-HMODULE hModule = NULL;
+HMODULE gHModule = NULL;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //The following tables were generated using the code:
@@ -729,15 +729,18 @@ class AES_GPU_DX10_Description : public IAlgorithmDescription
 public:
     AES_GPU_DX10_Description()
     {
-        m_IsOK = true;
+        m_IsOK = false;
         // This may fail if Direct3D 10 isn't installed ( running on Windows XP or older )
         TCHAR szPath[MAX_PATH + 1] = {0};
         if( ::GetSystemDirectory( szPath, MAX_PATH + 1 ) )
         {
             _tcscat_s( szPath, MAX_PATH, _T("\\d3d10.dll") );
             HMODULE hMod = LoadLibrary( szPath );
-            m_IsOK = NULL != hMod;
-            FreeLibrary( hMod );
+            if(hMod != NULL)
+            {
+                m_IsOK = true;
+                FreeLibrary( hMod );
+            }
         }
     }
     bool IsOK() { return m_IsOK; };
@@ -893,12 +896,12 @@ AES_GPU_DX10_Internal::Create()
     hr = D3D10CreateBlob(1024, &errors);
 #endif
 
-    hr = D3DX10CreateEffectFromResource( hModule, _T("AES_GPU_DX10_SHADER"),  _T("AES_GPU_DX10_SHADER.fx"),
+    hr = D3DX10CreateEffectFromResource( gHModule, _T("AES_GPU_DX10_SHADER"),  _T("AES_GPU_DX10_SHADER.fx"),
                                          NULL, NULL, "fx_4_0", dwShaderFlags, 0, pDevice, NULL, NULL, &retVal->m_pEffect10, &errors, NULL );
     if( FAILED( hr ) )
     {
     #if defined( DEBUG ) || defined( _DEBUG )
-        printf("%s", errors->GetBufferPointer());
+        printf("%s", (char*)errors->GetBufferPointer());
         __debugbreak();
     #endif
         goto _EXIT_AND_RETURN_NULL_;
@@ -911,8 +914,11 @@ AES_GPU_DX10_Internal::Create()
         hr = D3DDisassemble10Effect( retVal->m_pEffect10, 0, &asmShader);
         FILE *fout;
         fopen_s(&fout, "shader_asm.txt", "wt");
-        fprintf(fout,"%s", asmShader->GetBufferPointer());
-        fclose(fout);
+        if(fout != NULL)
+        {
+            fprintf(fout,"%s", (char*)asmShader->GetBufferPointer());
+            fclose(fout);
+        }
         SAFE_RELEASE(asmShader);
     #endif
     }
@@ -1943,6 +1949,6 @@ DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved )
     case DLL_PROCESS_DETACH:
         break;
     }
-    ::hModule = hModule;
+    ::gHModule = hModule;
     return TRUE;
 }
